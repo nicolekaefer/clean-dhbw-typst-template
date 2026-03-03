@@ -32,24 +32,26 @@
 
   // ---------- Logo(s) ---------------------------------------
 
+  let logo-slot(img, h) = box(height: h)[#align(center + horizon)[#img]]
+
   if logo-left != none and logo-right == none {
     // one logo: centered
     place(
       top + center,
       dy: -3 * page-grid,
-      box(logo-left, height: 3 * page-grid),
+      logo-slot(logo-left, 3 * page-grid),
     )
   } else if logo-left != none and logo-right != none {
     // two logos: left & right
     place(
       top + left,
       dy: -4 * page-grid,
-      box(logo-left, height: 3 * page-grid),
+      logo-slot(logo-left, 3.5 * page-grid),
     )
     place(
       top + right,
       dy: -4 * page-grid,
-      box(logo-right, height: 3 * page-grid),
+      logo-slot(logo-right, 3.5 * page-grid),
     )
   }
 
@@ -211,8 +213,7 @@
           grid.cell(
             colspan: 2,
             align: center,
-            text(weight: "regular", fill: rgb(226, 0, 26),
-            CONFIDENTIALITY_MARKER.at(language))
+            text(weight: "regular", fill: rgb(226, 0, 26), CONFIDENTIALITY_MARKER.at(language)),
           ),
         )
       },
