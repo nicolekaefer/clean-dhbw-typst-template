@@ -188,7 +188,7 @@
   
   // ---------- Heading Format (Part I) ---------------------------------------
 
-  show heading: set text(weight: "bold", fill: luma(80), font: heading-font)
+  show heading: set text(weight: "bold", fill: luma(60), font: heading-font)
   show heading.where(level: 1): it => {v(2 * page-grid) + text(size: 2 * page-grid, it)}
 
   // ---------- Abstract ---------------------------------------
@@ -261,20 +261,14 @@
     pagebreak()
     context{ 
       if in-body.get() {
-        v(page-grid * 10)
-        place(              // place heading number prominently at the upper right corner
-          top + right,
-          dx: 9pt,          // slight adjustment for optimal alignment with right margin
-          text(counter(heading).display(), 
-            top-edge: "bounds",
-            size: page-grid * 10, weight: 900, luma(235), 
-          )
-        )
-        text(               // heading text on separate line
-          it.body, size: h1-size,
-          top-edge: 0.75em, 
-          bottom-edge: -0.25em,
-        )
+        v(page-grid * 2)
+        // number and heading text on one line, left-aligned
+        text(size: h1-size, top-edge: 0.75em, bottom-edge: -0.25em)[
+          #text(weight: 900)[#counter(heading).display()]
+          #h(0.4em)
+          #it.body
+        ]
+        v(page-grid)
       } else {
         v(2 * page-grid) 
         text(size: 2 * page-grid, counter(heading).display() + h(0.5em) + it.body)   // appendix
@@ -283,7 +277,7 @@
   }
 
   show heading.where(level: 2): it => {v(16pt) + text(size: h2-size, it)}
-  show heading.where(level: 3): it => {v(16pt) + text(size: h3-size, it)}
+  show heading.where(level: 3): it => {v(16pt) + text(size: h3-size, fill: luma(40), it)}
   show heading.where(level: 4): it => {v(16pt) + smallcaps(text(size: h4-size, weight: "semibold", it.body))}
 
  // ---------- Body Text ---------------------------------------

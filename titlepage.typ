@@ -58,7 +58,7 @@
   // ---------- Title ---------------------------------------
 
   v(7 * page-grid)
-  text(weight: "bold", fill: luma(80), size: 1.5 * page-grid, title)
+  text(weight: "bold", fill: luma(40), size: 1.5 * page-grid, title)
   v(page-grid)
 
   // ---------- Sub-Title-Infos ---------------------------------------
@@ -109,7 +109,7 @@
       align: (right, left),
 
       // submission date
-      text(weight: "bold", fill: luma(80), TITLEPAGE_DATE.at(language)),
+      text(weight: "bold", fill: luma(40), TITLEPAGE_DATE.at(language)),
       text(
         if (type(date) == datetime) {
           date.display(date-format)
@@ -119,7 +119,7 @@
       ),
 
       // students
-      align(text(weight: "bold", fill: luma(80), TITLEPAGE_STUDENT_ID.at(language)), top),
+      align(text(weight: "bold", fill: luma(40), TITLEPAGE_STUDENT_ID.at(language)), top),
       stack(
         dir: ttb,
         for author in authors {
@@ -131,7 +131,7 @@
       // company
       ..if (not at-university) {
         (
-          align(text(weight: "bold", fill: luma(80), TITLEPAGE_COMPANY.at(language)), top),
+          align(text(weight: "bold", fill: luma(40), TITLEPAGE_COMPANY.at(language)), top),
           stack(
             dir: ttb,
             for author in authors {
@@ -187,7 +187,7 @@
       // company supervisor
       ..if ("company" in supervisor) {
         (
-          text(weight: "bold", fill: luma(80), TITLEPAGE_COMPANY_SUPERVISOR.at(language)),
+          text(weight: "bold", fill: luma(40), TITLEPAGE_COMPANY_SUPERVISOR.at(language)),
           if (type(supervisor.company) == str) { text(supervisor.company) },
         )
       },
@@ -197,7 +197,7 @@
         (
           text(
             weight: "bold",
-            fill: luma(80),
+            fill: luma(40),
             TITLEPAGE_SUPERVISOR.at(language) + university-short + [:],
           ),
           if (type(supervisor.university) == str) { text(supervisor.university) },
