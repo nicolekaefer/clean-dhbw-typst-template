@@ -116,8 +116,18 @@
     register-glossary(acronyms)
   }
 
-  // show links in dark blue
-  show link: set text(fill: blue.darken(40%))
+  // Show links in dark blue -- except repeated references to a glossary or
+  // acronym term, which are left in body colour so that a frequently used term
+  // does not speckle the page. `glossarium` bumps its per-term counter
+  // immediately before emitting the link, so at the link's own location a count
+  // of 1 means "first use of this term".
+  // CAVEAT: reads `glossarium` internal states by name (0.5.10).
+  show link: it => context {
+    let key = if type(it.dest) == label { str(it.dest) } else { "" }
+    let registered = state("__glossary_entries", (:)).get()
+    let seen = state("__glossary_counts", (:)).get().at(key, default: 0)
+    if key in registered and seen > 1 { it } else { text(fill: blue.darken(40%), it) }
+  }
 
   // ========== TITLEPAGE ========================================
 
