@@ -38,6 +38,7 @@
   date-format: "[day].[month].[year]",
   bibliography: none,
   glossary: none,
+  acronyms: none,
   bib-style: "ieee",
   math-numbering: "(1)",
   logo-left: image("dhbw.svg"),
@@ -108,6 +109,11 @@
   // register the glossary passed in `glossary`
   if (glossary != none) {
     register-glossary(glossary)
+  }
+
+  // register the acronyms passed in `acronyms`
+  if (acronyms != none) {
+    register-glossary(acronyms)
   }
 
   // show links in dark blue
@@ -310,9 +316,14 @@
 
   // ---------- Glossary  ---------------------------------------
 
+  if (acronyms != none) {
+    heading(level: 1, ACRONYMS.at(language))
+    print-glossary(acronyms, deduplicate-back-references: true)
+  }
+
   if (glossary != none) {
     heading(level: 1, GLOSSARY.at(language))
-    print-glossary(glossary)
+    print-glossary(glossary, deduplicate-back-references: true)
   }
 
   // ---------- Appendix (other contents) ---------------------------------------
