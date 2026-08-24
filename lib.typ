@@ -122,11 +122,21 @@
   // immediately before emitting the link, so at the link's own location a count
   // of 1 means "first use of this term".
   // CAVEAT: reads `glossarium` internal states by name (0.5.10).
-  show link: it => context {
-    let key = if type(it.dest) == label { str(it.dest) } else { "" }
-    let registered = state("__glossary_entries", (:)).get()
-    let seen = state("__glossary_counts", (:)).get().at(key, default: 0)
-    if key in registered and seen > 1 { it } else { text(fill: blue.darken(40%), it) }
+  show link: it => {
+    // Only glossary and acronym references need the state lookup, and only they
+    // have a label destination. Reading state for every link would also cover
+    // the links `outline()` synthesises for its entries, whose position in the
+    // document is not stable across layout passes -- that read never converges.
+    if type(it.dest) != label {
+      text(fill: blue.darken(40%), it)
+    } else {
+      context {
+        let key = str(it.dest)
+        let registered = state("__glossary_entries", (:)).get()
+        let seen = state("__glossary_counts", (:)).get().at(key, default: 0)
+        if key in registered and seen > 1 { it } else { text(fill: blue.darken(40%), it) }
+      }
+    }
   }
 
   // ========== TITLEPAGE ========================================
