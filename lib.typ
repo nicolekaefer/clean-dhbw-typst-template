@@ -195,7 +195,7 @@
 
   if (show-abstract and abstract != none) {
     heading(level: 1, numbering: none, outlined: false, ABSTRACT.at(language))
-    text(abstract)
+    text(abstract.abstract)
     pagebreak()
   }
 
