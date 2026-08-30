@@ -78,7 +78,7 @@
 )
 
 #let ABSTRACT = (
-  "de": "Zusammenfassung",
+  "de": "Abstract",
   "en": "Abstract",
 )
 
