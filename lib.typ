@@ -77,14 +77,14 @@
 
   // ---------- Fonts & Related Measures ---------------------------------------
 
-  let body-font = "Source Serif 4"
-  let body-size = 11pt
-  let heading-font = "Source Sans 3"
-  let h1-size = 40pt
+  let body-font = "Arial"
+  let body-size = 12pt
+  let heading-font = "Arial"
+  let h1-size = 35pt
   let h2-size = 16pt
-  let h3-size = 11pt
-  let h4-size = 11pt
-  let page-grid = 16pt  // vertical spacing on all pages
+  let h3-size = 12pt
+  let h4-size = 12pt
+  let page-grid = 18pt  // vertical spacing on all pages
 
   
   // ---------- Basic Document Settings ---------------------------------------
@@ -158,7 +158,7 @@
   )
 
   set page(
-    margin: (top: 4cm, bottom: 3cm, left: 4cm, right: 3cm),
+    margin: (top: 3.5cm, bottom: 2.5cm, left: 2.5cm, right: 2.5cm),
     header:
       grid(
         columns: (1fr, 1fr),

@@ -24,7 +24,7 @@
 
   set page(
     // identical to document
-    margin: (top: 4cm, bottom: 3cm, left: 4cm, right: 3cm),
+    margin: (top: 3.5cm, bottom: 2.5cm, left: 2.5cm, right: 2.5cm),
   )
   // The whole page in `title-font`, all elements centered
   set text(font: title-font, size: page-grid)
