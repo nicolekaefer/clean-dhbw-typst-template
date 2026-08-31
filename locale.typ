@@ -88,7 +88,7 @@
 )
 
 #let GLOSSARY = (
-  "de": "Glossar",
+  "de": "Abkürzungsverzeichnis",
   "en": "Glossary",
 )
 
