@@ -87,6 +87,11 @@
   "en": "Acronyms",
 )
 
+#let FIGURES = (
+  "de": "Abbildungsverzeichnis",
+  "en": "List of figures",
+)
+
 #let GLOSSARY = (
   "de": "Abkürzungsverzeichnis",
   "en": "Glossary",

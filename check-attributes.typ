@@ -18,6 +18,7 @@
   date,
   city,
   bibliography,
+  figures,
   glossary,
   bib-style,
   logo-left,
@@ -209,20 +210,25 @@
   }
 
 
-  // Check type of `glossary`
+  // Check type of`glossary`
   if (glossary != none and type(glossary) != array) {
     panic("Type of `glossary` is invalid. It must be an array of arrays")
   }
   
   
-  // Check availability of `bibliography`
+  // Check availability of`bibliography`
 
   if (type(bibliography) != content and bibliography != none) {
     panic("Bibliography is invalid. Specify a bibliography in the 'bibliography' attribute of the template.")
   }
 
+  // Check availability of figures
 
-  // Check correctness of `supervisor`
+  if (type(figures) != content and figures != none) {
+    panic("Figures are invalid. Specify a list of figures in the 'figures' attribute of the template.")
+  }
+
+  // Check correctness of`supervisor`
 
   if (
     type(supervisor) != dictionary or (

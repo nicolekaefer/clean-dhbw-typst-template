@@ -1,7 +1,7 @@
 #import "@preview/codelst:2.0.2": *
 #import "@preview/hydra:0.6.2": hydra
-#import "@preview/glossarium:0.5.10": make-glossary, register-glossary, print-glossary, gls, glspl
-#import "locale.typ": TABLE_OF_CONTENTS, APPENDIX, REFERENCES
+#import "@preview/glossarium:0.5.10": gls, glspl, make-glossary, print-glossary, register-glossary
+#import "locale.typ": APPENDIX, REFERENCES, TABLE_OF_CONTENTS
 #import "titlepage.typ": *
 #import "confidentiality-statement.typ": *
 #import "declaration-of-authorship.typ": *
@@ -37,6 +37,7 @@
   date: none,
   date-format: "[day].[month].[year]",
   bibliography: none,
+  figures: none,
   glossary: none,
   bib-style: "ieee",
   math-numbering: "(1)",
@@ -66,6 +67,7 @@
     date,
     city,
     bibliography,
+    figures,
     glossary,
     bib-style,
     logo-left,
@@ -84,15 +86,14 @@
   let h2-size = 16pt
   let h3-size = 12pt
   let h4-size = 12pt
-  let page-grid = 18pt  // vertical spacing on all pages
+  let page-grid = 18pt // vertical spacing on all pages
 
-  
   // ---------- Basic Document Settings ---------------------------------------
 
   set document(title: title, author: authors.map(author => author.name))
   let many-authors = authors.len() > 3
-  let in-frontmatter = state("in-frontmatter", true)    // to control page number format in frontmatter
-  let in-body = state("in-body", true)                  // to control heading formatting in/outside of body
+  let in-frontmatter = state("in-frontmatter", true) // to control page number format in frontmatter
+  let in-body = state("in-body", true) // to control heading formatting in/outside of body
 
   // customize captions
   set figure.caption(separator: [ -- ], position: bottom)
@@ -139,57 +140,51 @@
       page-grid,
     )
   }
-  counter(page).update(1)  
+  counter(page).update(1)
 
   // ---------- Page Setup ---------------------------------------
 
   // adapt body text layout to basic measures
   set text(
-    font: body-font, 
-    lang: language, 
-    size: body-size - 0.5pt,      // 0.5pt adjustment because of large x-hight
-    top-edge: 0.75 * body-size, 
+    font: body-font,
+    lang: language,
+    size: body-size - 0.5pt, // 0.5pt adjustment because of large x-hight
+    top-edge: 0.75 * body-size,
     bottom-edge: -0.25 * body-size,
   )
   set par(
     spacing: page-grid,
-    leading: page-grid - body-size, 
+    leading: page-grid - body-size,
     justify: true,
   )
 
   set page(
     margin: (top: 3.5cm, bottom: 2.5cm, left: 2.5cm, right: 2.5cm),
-    header:
-      grid(
-        columns: (1fr, 1fr),
-        align: (left, right),
-        row-gutter: 0.5em,
-        smallcaps(text(font: heading-font, size: body-size, 
-          context {
-            hydra(1, display: (_, it) => it.body, use-last: true, skip-starting: false)
-          },
-        )),
-        text(font: heading-font, size: body-size, 
-          number-type: "lining",
-          context {if in-frontmatter.get() {
-              counter(page).display("i")      // roman page numbers for the frontmatter
-            } else {
-              counter(page).display("1")      // arabic page numbers for the rest of the document
-            }
-          }
-        ),
-        grid.cell(colspan: 2, line(length: 100%, stroke: 0.5pt)),
-      ),
-      header-ascent: page-grid,
+    header: grid(
+      columns: (1fr, 1fr),
+      align: (left, right),
+      row-gutter: 0.5em,
+      smallcaps(text(font: heading-font, size: body-size, context {
+        hydra(1, display: (_, it) => it.body, use-last: true, skip-starting: false)
+      })),
+      text(font: heading-font, size: body-size, number-type: "lining", context {
+        if in-frontmatter.get() {
+          counter(page).display("i") // roman page numbers for the frontmatter
+        } else {
+          counter(page).display("1") // arabic page numbers for the rest of the document
+        }
+      }),
+      grid.cell(colspan: 2, line(length: 100%, stroke: 0.5pt)),
+    ),
+    header-ascent: page-grid,
   )
 
-
   // ========== FRONTMATTER ========================================
-  
+
   // ---------- Heading Format (Part I) ---------------------------------------
 
   show heading: set text(weight: "bold", fill: luma(60), font: heading-font)
-  show heading.where(level: 1): it => {v(2 * page-grid) + text(size: 2 * page-grid, it)}
+  show heading.where(level: 1): it => { v(2 * page-grid) + text(size: 2 * page-grid, it) }
 
   // ---------- Abstract ---------------------------------------
 
@@ -206,8 +201,8 @@
     set block(above: page-grid)
     set text(font: heading-font, weight: "semibold", size: body-size)
     link(
-      it.element.location(),    // make entry linkable
-      it.indented(it.prefix(), it.body() + box(width: 1fr,) +  it.page())
+      it.element.location(), // make entry linkable
+      it.indented(it.prefix(), it.body() + box(width: 1fr) + it.page()),
     )
   }
 
@@ -216,13 +211,11 @@
     set block(above: page-grid - body-size)
     set text(font: heading-font, size: body-size)
     link(
-      it.element.location(),  // make entry linkable
+      it.element.location(), // make entry linkable
       it.indented(
-          it.prefix(),
-          it.body() + "  " +
-            box(width: 1fr, repeat([.], gap: 2pt), baseline: 30%) +
-            "  " + it.page()
-      )
+        it.prefix(),
+        it.body() + "  " + box(width: 1fr, repeat([.], gap: 2pt), baseline: 30%) + "  " + it.page(),
+      ),
     )
   }
 
@@ -234,17 +227,16 @@
     )
   }
 
-  in-frontmatter.update(false)  // end of frontmatter
-  counter(page).update(0)       // so the first chapter starts at page 1 (now in arabic numbers)
+  in-frontmatter.update(false) // end of frontmatter
+  counter(page).update(0) // so the first chapter starts at page 1 (now in arabic numbers)
 
   // ========== DOCUMENT BODY ========================================
-  
+
   // ---------- Table Format ---------------------------------------
 
   set table(stroke: (x: none, y: 0.5pt))
   show table: set text(font: heading-font, size: body-size)
   show table.cell.where(y: 0): set text(weight: "bold")
-
 
   // ---------- Heading Format (Part II: H1-H4) ---------------------------------------
 
@@ -259,7 +251,7 @@
   show heading.where(level: 1): it => {
     set par(leading: 0pt, justify: false)
     pagebreak()
-    context{ 
+    context {
       if in-body.get() {
         v(page-grid * 2)
         // number and heading text on one line, left-aligned
@@ -270,20 +262,19 @@
         ]
         v(page-grid)
       } else {
-        v(2 * page-grid) 
-        text(size: 2 * page-grid, counter(heading).display() + h(0.5em) + it.body)   // appendix
+        v(2 * page-grid)
+        text(size: 2 * page-grid, counter(heading).display() + h(0.5em) + it.body) // appendix
       }
     }
   }
 
-  show heading.where(level: 2): it => {v(16pt) + text(size: h2-size, it)}
-  show heading.where(level: 3): it => {v(16pt) + text(size: h3-size, fill: luma(40), it)}
-  show heading.where(level: 4): it => {v(16pt) + smallcaps(text(size: h4-size, weight: "semibold", it.body))}
+  show heading.where(level: 2): it => { v(16pt) + text(size: h2-size, it) }
+  show heading.where(level: 3): it => { v(16pt) + text(size: h3-size, fill: luma(40), it) }
+  show heading.where(level: 4): it => { v(16pt) + smallcaps(text(size: h4-size, weight: "semibold", it.body)) }
 
- // ---------- Body Text ---------------------------------------
+  // ---------- Body Text ---------------------------------------
 
   body
-
 
   // ========== APPENDIX ========================================
 
@@ -302,6 +293,14 @@
     bibliography
   }
 
+  //----------- Abbildungsverzeichnis -----------------------------
+  if figures != none {
+    heading(level: 1, FIGURES.at(language))
+    outline(
+    target: figure.where(kind: image)
+    )
+  }
+
   // ---------- Glossary  ---------------------------------------
 
   if (glossary != none) {
@@ -311,7 +310,8 @@
 
   // ---------- Appendix (other contents) ---------------------------------------
 
-  if (appendix != none) {       // the user has to provide heading(s)
+  if (appendix != none) {
+    // the user has to provide heading(s)
     appendix
   }
 
@@ -359,5 +359,4 @@
       date-format,
     )
   }
-
 }
