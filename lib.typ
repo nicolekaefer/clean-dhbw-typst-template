@@ -295,7 +295,7 @@
 
   //----------- Abbildungsverzeichnis -----------------------------
   if figures != none {
-    heading(level: 1, FIGURES.at(language))
+    heading(numbering: "A.1", FIGURES.at(language))
     outline(
     target: figure.where(kind: image)
     )
