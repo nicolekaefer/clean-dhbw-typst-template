@@ -222,10 +222,11 @@
     panic("Bibliography is invalid. Specify a bibliography in the 'bibliography' attribute of the template.")
   }
 
-  // Check availability of figures
+  // Check type of `figures`
+  // it's a flag; `content` is still accepted for backwards compatibility
 
-  if (type(figures) != content and figures != none) {
-    panic("Figures are invalid. Specify a list of figures in the 'figures' attribute of the template.")
+  if (figures != none and type(figures) != bool and type(figures) != content) {
+    panic("Type of `figures` is invalid. Set the 'figures' attribute to `true` to show a list of figures.")
   }
 
   // Check correctness of`supervisor`

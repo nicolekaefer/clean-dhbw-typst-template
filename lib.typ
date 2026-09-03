@@ -1,7 +1,7 @@
 #import "@preview/codelst:2.0.2": *
 #import "@preview/hydra:0.6.2": hydra
 #import "@preview/glossarium:0.5.10": gls, glspl, make-glossary, print-glossary, register-glossary
-#import "locale.typ": APPENDIX, REFERENCES, TABLE_OF_CONTENTS
+#import "locale.typ": APPENDIX, FIGURES, REFERENCES, TABLE_OF_CONTENTS
 #import "titlepage.typ": *
 #import "confidentiality-statement.typ": *
 #import "declaration-of-authorship.typ": *
@@ -293,14 +293,35 @@
     bibliography
   }
 
-  //----------- Abbildungsverzeichnis -----------------------------
-  if figures != none {
-    heading(numbering: "A.1", FIGURES.at(language))
-    outline(
-    target: figure.where(kind: image)
+  //----------- List of Figures ---------------------------------------
+
+  if (figures != none and figures != false) {
+    heading(level: 1, FIGURES.at(language))
+
+    // figure entries are all on level 1, so they need their own (regular) formatting
+    show outline.entry: it => {
+      set block(above: page-grid - body-size)
+      set text(font: heading-font, size: body-size, weight: "regular")
+      link(
+        it.element.location(), // make entry linkable
+        it.indented(
+          it.prefix(),
+          it.body() + "  " + box(width: 1fr, repeat([.], gap: 2pt), baseline: 30%) + "  " + it.page(),
+          gap: 0.5em,
+        ),
+      )
+    }
+
+    // `title: none`, because the heading above is used instead of the outline's own title
+    // the `block` keeps the usual distance to the heading (as the entries have a tighter spacing)
+    block(
+      above: page-grid,
+      outline(
+        title: none,
+        target: figure.where(kind: image),
+      ),
     )
   }
-
   // ---------- Glossary  ---------------------------------------
 
   if (glossary != none) {
