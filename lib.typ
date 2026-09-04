@@ -293,7 +293,7 @@
     bibliography
   }
 
-  //----------- List of Figures ---------------------------------------
+//----------- List of Figures ---------------------------------------
 
   if (figures != none and figures != false) {
     heading(level: 1, FIGURES.at(language))
